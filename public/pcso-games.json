@@ -1,0 +1,121 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-04-27",
+  "source": {
+    "references": [
+      "https://www.pcso.gov.ph/SearchLottoResult.aspx",
+      "https://www.pcso.gov.ph/Games/ScheduleOfDrawsAndHorseRaces.aspx"
+    ],
+    "notes": "Game names verified from official PCSO navigation and draw-result listings. Some game-rule pages are bot-protected; verify digit-game matrix values manually when needed."
+  },
+  "games": [
+    {
+      "id": "ultra-lotto-6-58",
+      "displayName": "Ultra Lotto 6/58",
+      "category": "lotto",
+      "picks": 6,
+      "min": 1,
+      "max": 58,
+      "unique": true,
+      "ordered": true,
+      "padWidth": 2,
+      "verificationStatus": "confirmed-from-pcso-name-matrix"
+    },
+    {
+      "id": "grand-lotto-6-55",
+      "displayName": "Grand Lotto 6/55",
+      "category": "lotto",
+      "picks": 6,
+      "min": 1,
+      "max": 55,
+      "unique": true,
+      "ordered": true,
+      "padWidth": 2,
+      "verificationStatus": "confirmed-from-pcso-name-matrix"
+    },
+    {
+      "id": "super-lotto-6-49",
+      "displayName": "Super Lotto 6/49",
+      "category": "lotto",
+      "picks": 6,
+      "min": 1,
+      "max": 49,
+      "unique": true,
+      "ordered": true,
+      "padWidth": 2,
+      "verificationStatus": "confirmed-from-pcso-name-matrix"
+    },
+    {
+      "id": "mega-lotto-6-45",
+      "displayName": "Mega Lotto 6/45",
+      "category": "lotto",
+      "picks": 6,
+      "min": 1,
+      "max": 45,
+      "unique": true,
+      "ordered": true,
+      "padWidth": 2,
+      "verificationStatus": "confirmed-from-pcso-name-matrix"
+    },
+    {
+      "id": "lotto-6-42",
+      "displayName": "Lotto 6/42",
+      "category": "lotto",
+      "picks": 6,
+      "min": 1,
+      "max": 42,
+      "unique": true,
+      "ordered": true,
+      "padWidth": 2,
+      "verificationStatus": "confirmed-from-pcso-name-matrix"
+    },
+    {
+      "id": "6d-lotto",
+      "displayName": "6D Lotto",
+      "category": "digit",
+      "picks": 6,
+      "min": 0,
+      "max": 9,
+      "unique": false,
+      "ordered": true,
+      "padWidth": 1,
+      "verificationStatus": "digit-rule-needs-manual-pcso-page-check"
+    },
+    {
+      "id": "4d-lotto",
+      "displayName": "4D Lotto",
+      "category": "digit",
+      "picks": 4,
+      "min": 0,
+      "max": 9,
+      "unique": false,
+      "ordered": true,
+      "padWidth": 1,
+      "verificationStatus": "digit-rule-needs-manual-pcso-page-check"
+    },
+    {
+      "id": "3d-lotto",
+      "displayName": "3D Lotto",
+      "category": "digit",
+      "picks": 3,
+      "min": 0,
+      "max": 9,
+      "unique": false,
+      "ordered": true,
+      "padWidth": 1,
+      "verificationStatus": "digit-rule-needs-manual-pcso-page-check"
+    },
+    {
+      "id": "2d-lotto",
+      "displayName": "2D Lotto",
+      "category": "digit",
+      "picks": 2,
+      "min": 1,
+      "max": 31,
+      "unique": false,
+      "ordered": true,
+      "padWidth": 2,
+      "verificationStatus": "digit-rule-needs-manual-pcso-page-check"
+    }
+  ]
+}

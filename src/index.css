@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Chivo:wght@400;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  --ink-900: #13212e;
+  --paper: #fffef7;
+  --yellow-400: #ffd233;
+  --cyan-300: #78e6ff;
+  --orange-300: #ffa861;
+  --surface: #fdf6e6;
+  --display: 'Archivo Black', sans-serif;
+  --body: 'Chivo', sans-serif;
+  --mono: 'Space Mono', monospace;
+  font-family: var(--body);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--ink-900);
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(rgba(0, 0, 0, 0.06) 1px, transparent 1px) 0 0 / 32px 32px,
+    radial-gradient(circle at 20% 0%, #fff5dc 0%, #fbe6b6 46%, #f9d78f 100%);
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  letter-spacing: 0.02em;
+}

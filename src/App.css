@@ -1,0 +1,252 @@
+.page-shell {
+  display: grid;
+  gap: 2rem;
+  width: min(1100px, calc(100vw - 2.25rem));
+  margin: 0 auto;
+  padding: 1.25rem 0 4rem;
+}
+
+.hero,
+.catalog,
+.generator,
+.feature {
+  border: 3px solid var(--ink-900);
+  box-shadow: 8px 8px 0 var(--ink-900);
+  background: var(--paper);
+}
+
+.hero {
+  padding: clamp(1rem, 4vw, 2.5rem);
+  background:
+    radial-gradient(circle at 10% 15%, #ff8a00 0, #ff8a00 20%, transparent 20%),
+    radial-gradient(circle at 84% 88%, #00d5ff 0, #00d5ff 14%, transparent 14%),
+    linear-gradient(145deg, #ffe7c8, #fff3e0);
+}
+
+.hero-tag {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 0.6rem 0;
+  font-size: clamp(2.8rem, 10vw, 6.8rem);
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.hero-subcopy {
+  max-width: 60ch;
+  margin: 0;
+  font-size: clamp(1rem, 2vw, 1.24rem);
+}
+
+.hero-actions {
+  margin-top: 1.4rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.hero-legal {
+  margin-top: 1rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.action {
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+  padding: 0.72rem 1rem;
+  border: 3px solid var(--ink-900);
+  color: var(--ink-900);
+  background: var(--paper);
+  cursor: pointer;
+  transition: transform 0.16s ease;
+}
+
+.action:hover {
+  transform: translate(-2px, -2px);
+}
+
+.action:focus-visible,
+.chip:focus-visible,
+select:focus-visible {
+  outline: 3px dashed var(--ink-900);
+  outline-offset: 3px;
+}
+
+.action-primary {
+  background: var(--yellow-400);
+}
+
+.action-ghost {
+  background: transparent;
+}
+
+.catalog,
+.generator {
+  padding: clamp(1rem, 3vw, 2rem);
+  background: #fefbf5;
+}
+
+.catalog h2,
+.generator h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  text-transform: uppercase;
+}
+
+.catalog-subcopy,
+.generator-head p {
+  margin-top: 0.4rem;
+  margin-bottom: 0;
+  font-size: 1rem;
+}
+
+.chips {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.chip {
+  border: 3px solid var(--ink-900);
+  background: #fff;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.56rem 0.75rem;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 var(--ink-900);
+}
+
+.chip-active {
+  background: var(--cyan-300);
+}
+
+.controls {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.7rem;
+  align-items: end;
+}
+
+.controls label {
+  grid-column: 1 / -1;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+select {
+  height: 3rem;
+  border: 3px solid var(--ink-900);
+  font: inherit;
+  font-weight: 700;
+  padding: 0 0.7rem;
+  background: #fff;
+}
+
+.ticket {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 3px solid var(--ink-900);
+  background: #fff;
+}
+
+.ticket-empty {
+  font-weight: 700;
+}
+
+.ticket-title {
+  margin: 0;
+  font-size: 0.98rem;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.balls {
+  margin-top: 0.8rem;
+  display: flex;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.ball {
+  min-width: 3.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--ink-900);
+  box-shadow: 4px 4px 0 var(--ink-900);
+  background: var(--orange-300);
+  font-family: var(--display);
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0.45rem;
+}
+
+.ticket-meta {
+  margin-top: 0.8rem;
+  margin-bottom: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.error-msg {
+  margin-top: 0.8rem;
+  margin-bottom: 0;
+  border: 3px solid var(--ink-900);
+  background: #ffcbc9;
+  padding: 0.65rem;
+  font-weight: 700;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.feature {
+  padding: 1rem;
+  background: #fff9dc;
+}
+
+.feature h3 {
+  margin-top: 0;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+.feature p {
+  margin: 0;
+  font-size: 0.94rem;
+}
+
+@media (max-width: 900px) {
+  .controls {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .action,
+  .chip {
+    transition: none;
+  }
+
+  .action:hover {
+    transform: none;
+  }
+}
