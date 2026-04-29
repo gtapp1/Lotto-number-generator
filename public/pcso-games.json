@@ -17,7 +17,7 @@
       "min": 1,
       "max": 58,
       "unique": true,
-      "ordered": true,
+      "ordered": false,
       "padWidth": 2,
       "verificationStatus": "confirmed-from-pcso-name-matrix"
     },
@@ -29,7 +29,7 @@
       "min": 1,
       "max": 55,
       "unique": true,
-      "ordered": true,
+      "ordered": false,
       "padWidth": 2,
       "verificationStatus": "confirmed-from-pcso-name-matrix"
     },
@@ -41,7 +41,7 @@
       "min": 1,
       "max": 49,
       "unique": true,
-      "ordered": true,
+      "ordered": false,
       "padWidth": 2,
       "verificationStatus": "confirmed-from-pcso-name-matrix"
     },
@@ -53,7 +53,7 @@
       "min": 1,
       "max": 45,
       "unique": true,
-      "ordered": true,
+      "ordered": false,
       "padWidth": 2,
       "verificationStatus": "confirmed-from-pcso-name-matrix"
     },
@@ -65,7 +65,7 @@
       "min": 1,
       "max": 42,
       "unique": true,
-      "ordered": true,
+      "ordered": false,
       "padWidth": 2,
       "verificationStatus": "confirmed-from-pcso-name-matrix"
     },

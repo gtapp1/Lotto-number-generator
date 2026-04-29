@@ -29,15 +29,13 @@ const twoDLotto: PcsoGame = {
 }
 
 describe('generateEntry', () => {
-  it('generates sorted unique values for lotto games', () => {
+  it('generates unique values for lotto games (random order)', () => {
     const result = generateEntry(superLotto)
 
     expect(result.raw).toHaveLength(6)
     expect(new Set(result.raw).size).toBe(6)
     expect(result.raw.every((value) => value >= 1 && value <= 49)).toBe(true)
-
-    const sorted = [...result.raw].sort((a, b) => a - b)
-    expect(result.raw).toEqual(sorted)
+    // For display we expect random (draw-like) order, not forced ascending
   })
 
   it('generates in-range values for 2D game using 1..31', () => {
