@@ -80,3 +80,7 @@ Each game in the catalog must define:
 - A user can pick any scoped PCSO game and generate a valid entry in one click.
 - Every generated entry passes rule validation from the same source-of-truth config.
 - UI clearly explains each game rule before generation.
+
+## Planning Reference
+
+Future phases, upgrades, and backlog items are tracked in [docs/ROADMAP.md](docs/ROADMAP.md). Update that file whenever the product plan changes so the current direction stays available even if the chat history is lost.
