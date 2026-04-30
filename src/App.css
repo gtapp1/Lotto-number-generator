@@ -33,6 +33,8 @@
 }
 
 .rail-card {
+  position: relative;
+  overflow: hidden;
   border: 3px solid var(--ink-900);
   box-shadow: 8px 8px 0 var(--ink-900);
   background: #fff7df;
@@ -148,11 +150,115 @@
 }
 
 .hero {
+  position: relative;
+  overflow: hidden;
   padding: clamp(1rem, 4vw, 2.5rem);
   background:
     radial-gradient(circle at 10% 15%, #ff8a00 0, #ff8a00 20%, transparent 20%),
     radial-gradient(circle at 84% 88%, #00d5ff 0, #00d5ff 14%, transparent 14%),
     linear-gradient(145deg, #ffe7c8, #fff3e0);
+}
+
+.ornament-group {
+  pointer-events: none;
+}
+
+.ornament-group-hero {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+}
+
+.ornament-group-rail {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.65rem;
+}
+
+.ornament {
+  border: 3px solid var(--ink-900);
+  box-shadow: 6px 6px 0 var(--ink-900);
+}
+
+.ornament-circle {
+  border-radius: 999px;
+}
+
+.ornament-pill {
+  border-radius: 999px;
+}
+
+.ornament-square {
+  border-radius: 0.2rem;
+}
+
+.ornament-diamond {
+  transform: rotate(45deg);
+}
+
+.ornament-blue {
+  background: var(--cyan-300);
+}
+
+.ornament-yellow {
+  background: var(--yellow-400);
+}
+
+.ornament-orange {
+  background: var(--orange-300);
+}
+
+.ornament-cyan {
+  background: #c4f3ff;
+}
+
+.ornament-small {
+  box-shadow: 4px 4px 0 var(--ink-900);
+}
+
+.ornament-group-hero .ornament:nth-child(1) {
+  position: absolute;
+  top: 12%;
+  right: 9%;
+  width: 5.25rem;
+  height: 5.25rem;
+}
+
+.ornament-group-hero .ornament:nth-child(2) {
+  position: absolute;
+  top: 36%;
+  right: 20%;
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.ornament-group-hero .ornament:nth-child(3) {
+  position: absolute;
+  bottom: 14%;
+  right: 14%;
+  width: 7rem;
+  height: 2.35rem;
+}
+
+.ornament-group-rail .ornament {
+  position: relative;
+}
+
+.ornament-group-rail .ornament:nth-child(1) {
+  width: 2.8rem;
+  height: 2.8rem;
+}
+
+.ornament-group-rail .ornament:nth-child(2) {
+  width: 2.1rem;
+  height: 2.1rem;
+}
+
+.ornament-group-rail .ornament:nth-child(3) {
+  width: 3.25rem;
+  height: 1.4rem;
 }
 
 .hero-tag {
@@ -168,6 +274,7 @@
   font-size: clamp(2.8rem, 10vw, 6.8rem);
   line-height: 0.92;
   text-transform: uppercase;
+  max-width: 8ch;
 }
 
 .hero-subcopy {
@@ -559,6 +666,32 @@ input[type='number'] {
 
   .feature-grid {
     grid-template-columns: 1fr;
+  }
+
+  .hero {
+    min-height: 21rem;
+  }
+
+  .ornament-group-hero .ornament:nth-child(1) {
+    top: 10%;
+    right: 6%;
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .ornament-group-hero .ornament:nth-child(2) {
+    top: auto;
+    bottom: 16%;
+    right: 12%;
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .ornament-group-hero .ornament:nth-child(3) {
+    bottom: 6%;
+    right: 20%;
+    width: 5rem;
+    height: 1.8rem;
   }
 }
 

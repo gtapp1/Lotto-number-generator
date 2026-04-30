@@ -9,6 +9,18 @@ const HISTORY_STORAGE_KEY = 'juan-to-six:history:v1'
 const HISTORY_LIMIT = 20
 const MAX_BATCH_SIZE = 10
 
+const heroOrnaments = [
+  { className: 'ornament ornament-circle ornament-blue', label: 'decorative circle' },
+  { className: 'ornament ornament-square ornament-yellow', label: 'decorative square' },
+  { className: 'ornament ornament-pill ornament-orange', label: 'decorative pill' },
+]
+
+const railOrnaments = [
+  { className: 'ornament ornament-diamond ornament-cyan', label: 'decorative diamond' },
+  { className: 'ornament ornament-circle ornament-yellow ornament-small', label: 'decorative circle' },
+  { className: 'ornament ornament-square ornament-orange ornament-small', label: 'decorative square' },
+]
+
 const isStoredEntry = (value: unknown): value is GeneratedEntry => {
   if (!value || typeof value !== 'object') {
     return false
@@ -229,6 +241,17 @@ function App() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
       >
+        <div className="ornament-group ornament-group-hero" aria-hidden="true">
+          {heroOrnaments.map((ornament, index) => (
+            <motion.span
+              key={ornament.label}
+              className={ornament.className}
+              initial={{ opacity: 0, scale: 0.88, rotate: -8 }}
+              animate={{ opacity: 1, scale: 1, rotate: index % 2 === 0 ? 8 : -6 }}
+              transition={{ duration: 0.7, delay: index * 0.08 }}
+            />
+          ))}
+        </div>
         <p className="hero-tag">Independent PCSO-style generator</p>
         <h1>Juan-to-Six</h1>
         <p className="hero-subcopy">
@@ -285,6 +308,18 @@ function App() {
           transition={{ duration: 0.5 }}
         >
           <section className="rail-card rail-card-accent">
+            <div className="ornament-group ornament-group-rail" aria-hidden="true">
+              {railOrnaments.map((ornament, index) => (
+                <motion.span
+                  key={ornament.label}
+                  className={ornament.className}
+                  initial={{ opacity: 0, y: 8, rotate: -10 }}
+                  whileInView={{ opacity: 1, y: 0, rotate: index % 2 === 0 ? 10 : -8 }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{ duration: 0.6, delay: index * 0.06 }}
+                />
+              ))}
+            </div>
             <p className="rail-kicker">Selected game</p>
             <h2>{selectedGame?.displayName ?? 'Choose a game'}</h2>
             <p className="rail-copy">
@@ -493,6 +528,18 @@ function App() {
           transition={{ duration: 0.5 }}
         >
           <section className="rail-card rail-card-accent">
+            <div className="ornament-group ornament-group-rail" aria-hidden="true">
+              {railOrnaments.map((ornament, index) => (
+                <motion.span
+                  key={`${ornament.label}-stats`}
+                  className={ornament.className}
+                  initial={{ opacity: 0, y: 8, rotate: 8 }}
+                  whileInView={{ opacity: 1, y: 0, rotate: index % 2 === 0 ? -10 : 8 }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{ duration: 0.6, delay: index * 0.06 }}
+                />
+              ))}
+            </div>
             <p className="rail-kicker">Session stats</p>
             <div className="stat-stack">
               <div className="stat-item">
