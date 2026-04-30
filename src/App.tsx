@@ -90,6 +90,17 @@ function App() {
     return config.games.find((game) => game.id === selectedGameId) ?? null
   }, [config, selectedGameId])
 
+  const sessionStats = useMemo(() => {
+    const uniqueGames = new Set(history.map((item) => item.gameId))
+    const latestHistory = history[0] ?? null
+
+    return {
+      generatedCount: history.length,
+      gameCount: uniqueGames.size,
+      latestHistory,
+    }
+  }, [history])
+
   const gameNameMap = useMemo(() => {
     const map = new Map<string, string>()
     config?.games.forEach((game) => map.set(game.id, game.displayName))
@@ -201,6 +212,15 @@ function App() {
     ? `${selectedGame.displayName}: pick ${selectedGame.picks} values from ${selectedGame.min} to ${selectedGame.max}${selectedGame.unique ? ', no duplicates' : ''}`
     : ''
 
+  const selectedGameFacts = selectedGame
+    ? [
+        { label: 'Pick count', value: selectedGame.picks.toString() },
+        { label: 'Range', value: `${selectedGame.min} to ${selectedGame.max}` },
+        { label: 'Unique', value: selectedGame.unique ? 'Yes' : 'No' },
+        { label: 'Display order', value: selectedGame.ordered ? 'Sorted' : 'Draw-like' },
+      ]
+    : []
+
   return (
     <div className="page-shell">
       <motion.header
@@ -256,176 +276,276 @@ function App() {
         </div>
       </motion.section>
 
-      <motion.section
-        id="generator-panel"
-        className="generator"
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="generator-head">
-          <h2>Rule-Driven Generator</h2>
-          <p>{ruleSummary || 'Loading game rules...'}</p>
-        </div>
+      <div className="dashboard-grid">
+        <motion.aside
+          className="side-rail side-rail-left"
+          initial={{ opacity: 0, x: -18 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5 }}
+        >
+          <section className="rail-card rail-card-accent">
+            <p className="rail-kicker">Selected game</p>
+            <h2>{selectedGame?.displayName ?? 'Choose a game'}</h2>
+            <p className="rail-copy">
+              {ruleSummary || 'Pick a game to show its rule summary and generation format.'}
+            </p>
+            {selectedGame && (
+              <dl className="fact-list">
+                {selectedGameFacts.map((item) => (
+                  <div key={item.label} className="fact-row">
+                    <dt>{item.label}</dt>
+                    <dd>{item.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+          </section>
 
-        <div className="controls">
-          <label htmlFor="game-select">Select game</label>
-          <select
-            id="game-select"
-            value={selectedGameId}
-            onChange={(event) => setSelectedGameId(event.target.value)}
-            disabled={!config}
+          <section className="rail-card">
+            <p className="rail-kicker">Game behavior</p>
+            <ul className="rail-list">
+              <li>6/x lotto games use draw-like unsorted output.</li>
+              <li>Digit games keep their numeric structure and padding rules.</li>
+              <li>All validation comes from the same config source.</li>
+            </ul>
+          </section>
+        </motion.aside>
+
+        <main className="center-stack">
+          <motion.section
+            id="generator-panel"
+            className="generator"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6 }}
           >
-            {config?.games.map((game) => (
-              <option key={game.id} value={game.id}>
-                {game.displayName}
-              </option>
-            ))}
-          </select>
-
-          <button
-            type="button"
-            className="action action-primary"
-            onClick={() => handleGenerate(batchSize)}
-            disabled={!selectedGame}
-          >
-            {batchSize > 1 ? `Generate ${batchSize}` : 'Generate Entry'}
-          </button>
-        </div>
-
-        <div className="batch-panel">
-          <div>
-            <h3>Quick batch</h3>
-            <p>Generate up to {MAX_BATCH_SIZE} entries at once and save them to history.</p>
-          </div>
-          <div className="batch-actions">
-            <div className="batch-field">
-              <label htmlFor="batch-size">Batch size</label>
-              <input
-                id="batch-size"
-                type="number"
-                min={1}
-                max={MAX_BATCH_SIZE}
-                value={batchSize}
-                onChange={(event) => handleBatchSizeChange(event.target.value)}
-              />
+            <div className="generator-head">
+              <h2>Rule-Driven Generator</h2>
+              <p>{ruleSummary || 'Loading game rules...'}</p>
             </div>
-            <div className="batch-buttons">
-              {[1, 5, 10].map((size) => (
-                <button
-                  key={size}
-                  type="button"
-                  className={`action ${batchSize === size ? 'action-primary' : ''}`}
-                  onClick={() => handleGenerate(size)}
-                  disabled={!selectedGame}
-                >
-                  {size}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
 
-        {latestBatch.length > 0 ? (
-          <div className="ticket-grid" role="list" aria-label="Generated entries">
-            {latestBatch.map((item, index) => (
-              <motion.div
-                key={`${item.createdAt}-${item.gameId}-${index}`}
-                className="ticket"
-                role="listitem"
-                initial={{ opacity: 0, scale: 0.96, y: 10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ duration: 0.35, ease: 'easeOut', delay: index * 0.05 }}
+            <div className="controls">
+              <label htmlFor="game-select">Select game</label>
+              <select
+                id="game-select"
+                value={selectedGameId}
+                onChange={(event) => setSelectedGameId(event.target.value)}
+                disabled={!config}
               >
-                <div className="ticket-head">
-                  <p className="ticket-title">{getGameLabel(item.gameId)}</p>
-                  {latestBatch.length > 1 && (
-                    <span className="ticket-tag">
-                      Set {index + 1} / {latestBatch.length}
-                    </span>
-                  )}
+                {config?.games.map((game) => (
+                  <option key={game.id} value={game.id}>
+                    {game.displayName}
+                  </option>
+                ))}
+              </select>
+
+              <button
+                type="button"
+                className="action action-primary"
+                onClick={() => handleGenerate(batchSize)}
+                disabled={!selectedGame}
+              >
+                {batchSize > 1 ? `Generate ${batchSize}` : 'Generate Entry'}
+              </button>
+            </div>
+
+            <div className="batch-panel">
+              <div>
+                <h3>Quick batch</h3>
+                <p>Generate up to {MAX_BATCH_SIZE} entries at once and save them to history.</p>
+              </div>
+              <div className="batch-actions">
+                <div className="batch-field">
+                  <label htmlFor="batch-size">Batch size</label>
+                  <input
+                    id="batch-size"
+                    type="number"
+                    min={1}
+                    max={MAX_BATCH_SIZE}
+                    value={batchSize}
+                    onChange={(event) => handleBatchSizeChange(event.target.value)}
+                  />
                 </div>
-                <div className="balls" role="list" aria-label="Generated values">
-                  {item.formatted.map((value, valueIndex) => (
-                    <motion.span
-                      key={`${item.createdAt}-${value}-${valueIndex}`}
-                      className="ball"
-                      role="listitem"
-                      initial={{ opacity: 0, y: 10, rotate: -6 }}
-                      animate={{ opacity: 1, y: 0, rotate: 0 }}
-                      transition={{ delay: valueIndex * 0.05 }}
+                <div className="batch-buttons">
+                  {[1, 5, 10].map((size) => (
+                    <button
+                      key={size}
+                      type="button"
+                      className={`action ${batchSize === size ? 'action-primary' : ''}`}
+                      onClick={() => handleGenerate(size)}
+                      disabled={!selectedGame}
                     >
-                      {value}
-                    </motion.span>
+                      {size}
+                    </button>
                   ))}
                 </div>
-                <p className="ticket-meta">Generated: {new Date(item.createdAt).toLocaleString()}</p>
-                <div className="ticket-actions">
-                  <button type="button" className="action action-ghost" onClick={() => handleCopy(item)}>
-                    Copy
-                  </button>
-                  <button type="button" className="action" onClick={() => handleShare(item)}>
-                    Share
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        ) : (
-          <motion.div
-            key="empty"
-            className="ticket ticket-empty"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            Tap generate to create your first entry.
-          </motion.div>
-        )}
-
-        <div className="history-panel">
-          <div className="history-head">
-            <div>
-              <h3>Recent entries</h3>
-              <p className="history-subcopy">Saved locally in this browser.</p>
+              </div>
             </div>
-            <button
-              type="button"
-              className="action action-ghost"
-              onClick={clearHistory}
-              disabled={history.length === 0}
-            >
-              Clear history
-            </button>
-          </div>
 
-          {history.length === 0 ? (
-            <p className="history-empty">No history yet. Generate your first batch.</p>
-          ) : (
-            <ul className="history-list">
-              {history.map((item, index) => (
-                <li key={`${item.createdAt}-${item.gameId}-${index}`} className="history-item">
-                  <p className="history-title">{getGameLabel(item.gameId)}</p>
-                  <p className="history-numbers">{item.formatted.join(' ')}</p>
-                  <p className="history-meta">{new Date(item.createdAt).toLocaleString()}</p>
-                  <div className="history-actions">
-                    <button type="button" className="action action-ghost" onClick={() => handleCopy(item)}>
-                      Copy
-                    </button>
-                    <button type="button" className="action" onClick={() => handleShare(item)}>
-                      Share
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+            {latestBatch.length > 0 ? (
+              <div className="ticket-grid" role="list" aria-label="Generated entries">
+                {latestBatch.map((item, index) => (
+                  <motion.div
+                    key={`${item.createdAt}-${item.gameId}-${index}`}
+                    className="ticket"
+                    role="listitem"
+                    initial={{ opacity: 0, scale: 0.96, y: 10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ duration: 0.35, ease: 'easeOut', delay: index * 0.05 }}
+                  >
+                    <div className="ticket-head">
+                      <p className="ticket-title">{getGameLabel(item.gameId)}</p>
+                      {latestBatch.length > 1 && (
+                        <span className="ticket-tag">
+                          Set {index + 1} / {latestBatch.length}
+                        </span>
+                      )}
+                    </div>
+                    <div className="balls" role="list" aria-label="Generated values">
+                      {item.formatted.map((value, valueIndex) => (
+                        <motion.span
+                          key={`${item.createdAt}-${value}-${valueIndex}`}
+                          className="ball"
+                          role="listitem"
+                          initial={{ opacity: 0, y: 10, rotate: -6 }}
+                          animate={{ opacity: 1, y: 0, rotate: 0 }}
+                          transition={{ delay: valueIndex * 0.05 }}
+                        >
+                          {value}
+                        </motion.span>
+                      ))}
+                    </div>
+                    <p className="ticket-meta">Generated: {new Date(item.createdAt).toLocaleString()}</p>
+                    <div className="ticket-actions">
+                      <button type="button" className="action action-ghost" onClick={() => handleCopy(item)}>
+                        Copy
+                      </button>
+                      <button type="button" className="action" onClick={() => handleShare(item)}>
+                        Share
+                      </button>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            ) : (
+              <motion.div
+                key="empty"
+                className="ticket ticket-empty"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                Tap generate to create your first entry.
+              </motion.div>
+            )}
 
-        {copyStatus && <p className="copy-status">{copyStatus}</p>}
+            <div className="history-panel">
+              <div className="history-head">
+                <div>
+                  <h3>Recent entries</h3>
+                  <p className="history-subcopy">Saved locally in this browser.</p>
+                </div>
+                <button
+                  type="button"
+                  className="action action-ghost"
+                  onClick={clearHistory}
+                  disabled={history.length === 0}
+                >
+                  Clear history
+                </button>
+              </div>
 
-        {(configError || entryError) && <p className="error-msg">{configError || entryError}</p>}
-      </motion.section>
+              {history.length === 0 ? (
+                <p className="history-empty">No history yet. Generate your first batch.</p>
+              ) : (
+                <ul className="history-list">
+                  {history.map((item, index) => (
+                    <li key={`${item.createdAt}-${item.gameId}-${index}`} className="history-item">
+                      <p className="history-title">{getGameLabel(item.gameId)}</p>
+                      <p className="history-numbers">{item.formatted.join(' ')}</p>
+                      <p className="history-meta">{new Date(item.createdAt).toLocaleString()}</p>
+                      <div className="history-actions">
+                        <button type="button" className="action action-ghost" onClick={() => handleCopy(item)}>
+                          Copy
+                        </button>
+                        <button type="button" className="action" onClick={() => handleShare(item)}>
+                          Share
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            {copyStatus && <p className="copy-status">{copyStatus}</p>}
+
+            {(configError || entryError) && <p className="error-msg">{configError || entryError}</p>}
+          </motion.section>
+        </main>
+
+        <motion.aside
+          className="side-rail side-rail-right"
+          initial={{ opacity: 0, x: 18 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5 }}
+        >
+          <section className="rail-card rail-card-accent">
+            <p className="rail-kicker">Session stats</p>
+            <div className="stat-stack">
+              <div className="stat-item">
+                <span className="stat-value">{sessionStats.generatedCount}</span>
+                <span className="stat-label">Entries generated</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-value">{sessionStats.gameCount}</span>
+                <span className="stat-label">Games used</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-value">{MAX_BATCH_SIZE}</span>
+                <span className="stat-label">Batch cap</span>
+              </div>
+            </div>
+          </section>
+
+          <section className="rail-card">
+            <p className="rail-kicker">Latest pick</p>
+            {sessionStats.latestHistory ? (
+              <>
+                <h3>{getGameLabel(sessionStats.latestHistory.gameId)}</h3>
+                <p className="rail-copy rail-mono">{sessionStats.latestHistory.formatted.join(' ')}</p>
+                <p className="rail-copy rail-muted">
+                  {new Date(sessionStats.latestHistory.createdAt).toLocaleString()}
+                </p>
+              </>
+            ) : (
+              <p className="rail-copy">No generated entries yet. Use the center panel to start a batch.</p>
+            )}
+          </section>
+
+          <section className="rail-card">
+            <p className="rail-kicker">Quick actions</p>
+            <div className="quick-actions">
+              <button type="button" className="action action-primary" onClick={() => handleGenerate(5)} disabled={!selectedGame}>
+                Generate 5
+              </button>
+              <button type="button" className="action" onClick={() => handleGenerate(10)} disabled={!selectedGame}>
+                Generate 10
+              </button>
+              <button
+                type="button"
+                className="action action-ghost"
+                onClick={() => latestBatch[0] && handleCopy(latestBatch[0])}
+                disabled={latestBatch.length === 0}
+              >
+                Copy latest
+              </button>
+            </div>
+          </section>
+        </motion.aside>
+      </div>
 
       <motion.section
         className="feature-grid"
