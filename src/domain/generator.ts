@@ -50,7 +50,7 @@ export const validateEntry = (game: PcsoGame, values: number[]): string[] => {
     errors.push('Duplicate values found in unique game')
   }
 
-  if (game.category === 'lotto' && game.ordered) {
+  if (game.orderMode === 'ascending') {
     const sorted = [...values].sort((a, b) => a - b)
     const isSorted = sorted.every((value, index) => value === values[index])
 
@@ -65,7 +65,7 @@ export const validateEntry = (game: PcsoGame, values: number[]): string[] => {
 export const generateEntry = (game: PcsoGame): GeneratedEntry => {
   const generated = game.unique ? pickUniqueNumbers(game) : pickWithReplacement(game)
 
-  const raw = game.category === 'lotto' && game.ordered ? [...generated].sort((a, b) => a - b) : generated
+  const raw = game.orderMode === 'ascending' ? [...generated].sort((a, b) => a - b) : generated
   const validationErrors = validateEntry(game, raw)
 
   if (validationErrors.length > 0) {
