@@ -17,7 +17,7 @@
       "min": 1,
       "max": 58,
       "unique": true,
-      "ordered": true,
+      "orderMode": "ascending",
       "padWidth": 2,
       "verificationStatus": "confirmed-from-pcso-name-matrix"
     },
@@ -29,7 +29,7 @@
       "min": 1,
       "max": 55,
       "unique": true,
-      "ordered": true,
+      "orderMode": "ascending",
       "padWidth": 2,
       "verificationStatus": "confirmed-from-pcso-name-matrix"
     },
@@ -41,7 +41,7 @@
       "min": 1,
       "max": 49,
       "unique": true,
-      "ordered": true,
+      "orderMode": "ascending",
       "padWidth": 2,
       "verificationStatus": "confirmed-from-pcso-name-matrix"
     },
@@ -53,7 +53,7 @@
       "min": 1,
       "max": 45,
       "unique": true,
-      "ordered": true,
+      "orderMode": "ascending",
       "padWidth": 2,
       "verificationStatus": "confirmed-from-pcso-name-matrix"
     },
@@ -65,7 +65,7 @@
       "min": 1,
       "max": 42,
       "unique": true,
-      "ordered": true,
+      "orderMode": "ascending",
       "padWidth": 2,
       "verificationStatus": "confirmed-from-pcso-name-matrix"
     },
@@ -77,7 +77,7 @@
       "min": 0,
       "max": 9,
       "unique": false,
-      "ordered": true,
+      "orderMode": "exact",
       "padWidth": 1,
       "verificationStatus": "digit-rule-needs-manual-pcso-page-check"
     },
@@ -89,7 +89,7 @@
       "min": 0,
       "max": 9,
       "unique": false,
-      "ordered": true,
+      "orderMode": "generated",
       "padWidth": 1,
       "verificationStatus": "digit-rule-needs-manual-pcso-page-check"
     },
@@ -101,7 +101,7 @@
       "min": 0,
       "max": 9,
       "unique": false,
-      "ordered": true,
+      "orderMode": "generated",
       "padWidth": 1,
       "verificationStatus": "digit-rule-needs-manual-pcso-page-check"
     },
@@ -113,7 +113,7 @@
       "min": 1,
       "max": 31,
       "unique": false,
-      "ordered": true,
+      "orderMode": "generated",
       "padWidth": 2,
       "verificationStatus": "digit-rule-needs-manual-pcso-page-check"
     }
