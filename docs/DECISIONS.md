@@ -8,8 +8,11 @@
 4. 6/x lotto games generate 6 unique values from 1..x and display as 2-digit tokens.
 5. The project uses a local source-of-truth because parts of PCSO pages are anti-bot protected.
 6. 2D Lotto range is set to 1..31 for V1.
-7. Digit games (2D/3D/4D/6D) preserve generated order.
+7. Digit games (2D/3D/4D) preserve generated order.
 8. V1 stack is React + Vite + TypeScript (see `docs/TECH_STACK_DECISION.md`).
+9. Lotto games are displayed in ascending order for readability.
+10. 6D Lotto is modeled as exact-order output, distinct from the generated-order digit games.
+11. The app loads rules directly from `config/pcso-games.json` as the canonical catalog.
 
 ## Open Questions To Confirm Before Full Build
 

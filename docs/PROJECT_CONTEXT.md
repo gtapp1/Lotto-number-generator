@@ -56,9 +56,15 @@ Each game in the catalog must define:
 - min
 - max
 - unique
-- ordered
+- orderMode
 - padWidth
 - verificationStatus
+
+`orderMode` values:
+
+- `ascending` for 6/x lotto games
+- `exact` for 6D Lotto
+- `generated` for other digit games
 
 ## Product Constraints
 

@@ -24,7 +24,7 @@ For each generated entry, run these checks:
 - count check: length equals `picks`
 - range check: every value is between `min` and `max`
 - uniqueness check: enforce when `unique=true`
-- ordering check: enforce when `ordered=true`
+- ordering check: enforce when `orderMode=ascending`
 - formatting check: zero-padding by `padWidth` when defined
 
 Output: pass/fail result with reason codes.

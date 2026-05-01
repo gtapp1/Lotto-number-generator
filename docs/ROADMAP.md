@@ -38,10 +38,10 @@ This document tracks future phases and planned updates for the Juan-to-Six PCSO 
 - Admin panel for config updates (optional backend).
 
 ## Open Questions
-- Do we want lotto numbers to be displayed in draw order or sorted order?
 - Which sources should be used for official winning numbers?
 - Should history be global or per game?
 
 ## Notes
-- Keep `public/pcso-games.json` as the source of truth for game rules.
+- Keep `config/pcso-games.json` as the source of truth for game rules.
+- Lotto output is sorted ascending; 6D Lotto is marked exact order; other digit games keep generated order.
 - Update this roadmap whenever a phase is completed or reprioritized.
