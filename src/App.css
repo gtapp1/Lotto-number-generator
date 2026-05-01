@@ -290,6 +290,24 @@
   flex-wrap: wrap;
 }
 
+.hero-pills {
+  margin-top: 1.05rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.hero-pill {
+  border: 3px solid var(--ink-900);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 4px 4px 0 var(--ink-900);
+  padding: 0.45rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 .hero-legal {
   margin-top: 1rem;
   font-size: 0.84rem;
@@ -621,6 +639,18 @@ input[type='number'] {
   background: #fff9dc;
 }
 
+.feature-grid .feature:nth-child(1) {
+  background: linear-gradient(180deg, #fff3cc, #fff8e4);
+}
+
+.feature-grid .feature:nth-child(2) {
+  background: linear-gradient(180deg, #dff6ff, #f3fbff);
+}
+
+.feature-grid .feature:nth-child(3) {
+  background: linear-gradient(180deg, #e8ffd9, #f7fff0);
+}
+
 .feature h3 {
   margin-top: 0;
   margin-bottom: 0.4rem;
@@ -703,7 +733,8 @@ input[type='number'] {
 
 @media (prefers-reduced-motion: reduce) {
   .action,
-  .chip {
+  .chip,
+  .hero-pill {
     transition: none;
   }
 

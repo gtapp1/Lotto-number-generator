@@ -21,6 +21,18 @@ const railOrnaments = [
   { className: 'ornament ornament-square ornament-orange ornament-small', label: 'decorative square' },
 ]
 
+const getOrderLabel = (game: PcsoGame): string => {
+  if (game.orderMode === 'ascending') {
+    return 'Ascending display'
+  }
+
+  if (game.orderMode === 'exact') {
+    return 'Exact order'
+  }
+
+  return 'Generated order'
+}
+
 const isStoredEntry = (value: unknown): value is GeneratedEntry => {
   if (!value || typeof value !== 'object') {
     return false
@@ -36,34 +48,36 @@ const isStoredEntry = (value: unknown): value is GeneratedEntry => {
   )
 }
 
+const loadStoredHistory = (): GeneratedEntry[] => {
+  const stored = localStorage.getItem(HISTORY_STORAGE_KEY)
+
+  if (!stored) {
+    return []
+  }
+
+  try {
+    const parsed: unknown = JSON.parse(stored)
+
+    if (Array.isArray(parsed)) {
+      return parsed.filter(isStoredEntry).slice(0, HISTORY_LIMIT)
+    }
+  } catch {
+    return []
+  }
+
+  return []
+}
+
 function App() {
   const [config, setConfig] = useState<PcsoConfig | null>(null)
   const [configError, setConfigError] = useState<string | null>(null)
   const [selectedGameId, setSelectedGameId] = useState<string>('super-lotto-6-49')
   const [latestBatch, setLatestBatch] = useState<GeneratedEntry[]>([])
   const [entryError, setEntryError] = useState<string | null>(null)
-  const [history, setHistory] = useState<GeneratedEntry[]>([])
+  const [history, setHistory] = useState<GeneratedEntry[]>(() => loadStoredHistory())
   const [batchSize, setBatchSize] = useState<number>(1)
   const [copyStatus, setCopyStatus] = useState<string | null>(null)
   const copyTimeoutRef = useRef<number | null>(null)
-
-  useEffect(() => {
-    const stored = localStorage.getItem(HISTORY_STORAGE_KEY)
-
-    if (!stored) {
-      return
-    }
-
-    try {
-      const parsed: unknown = JSON.parse(stored)
-
-      if (Array.isArray(parsed)) {
-        setHistory(parsed.filter(isStoredEntry).slice(0, HISTORY_LIMIT))
-      }
-    } catch {
-      setHistory([])
-    }
-  }, [])
 
   useEffect(() => {
     localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(history))
@@ -221,7 +235,7 @@ function App() {
   }
 
   const ruleSummary = selectedGame
-    ? `${selectedGame.displayName}: pick ${selectedGame.picks} values from ${selectedGame.min} to ${selectedGame.max}${selectedGame.unique ? ', no duplicates' : ''}`
+    ? `${selectedGame.displayName}: random picks from ${selectedGame.min} to ${selectedGame.max}${selectedGame.unique ? ', no duplicates' : ''}, ${getOrderLabel(selectedGame).toLowerCase()}`
     : ''
 
   const selectedGameFacts = selectedGame
@@ -229,7 +243,7 @@ function App() {
         { label: 'Pick count', value: selectedGame.picks.toString() },
         { label: 'Range', value: `${selectedGame.min} to ${selectedGame.max}` },
         { label: 'Unique', value: selectedGame.unique ? 'Yes' : 'No' },
-        { label: 'Display order', value: selectedGame.ordered ? 'Sorted' : 'Draw-like' },
+        { label: 'Display order', value: getOrderLabel(selectedGame) },
       ]
     : []
 
@@ -255,20 +269,26 @@ function App() {
         <p className="hero-tag">Independent PCSO-style generator</p>
         <h1>Juan-to-Six</h1>
         <p className="hero-subcopy">
-          Brutalist energy, strict game rules. Generate valid entries for official PCSO game types in one click.
+          Random pick generation for PCSO-style games, with valid ranges, correct counts, and local history in one place.
         </p>
+
+        <div className="hero-pills" aria-label="Core behaviors">
+          <span className="hero-pill">Random selection</span>
+          <span className="hero-pill">Ascending lotto display</span>
+          <span className="hero-pill">Browser-local history</span>
+        </div>
 
         <div className="hero-actions">
           <button type="button" className="action action-primary" onClick={jumpToGenerator}>
-            Generate My Numbers
+            Generate a Slip
           </button>
           <a className="action action-ghost" href="#game-catalog">
-            View Game Matrix
+            Browse Game Rules
           </a>
         </div>
 
         <p className="hero-legal">
-          Not affiliated with PCSO. This app is a formatting and randomization helper only.
+          Independent utility. Not an official PCSO service.
         </p>
       </motion.header>
 
@@ -281,7 +301,7 @@ function App() {
         transition={{ duration: 0.6 }}
       >
         <h2>PCSO Game Catalog</h2>
-        <p className="catalog-subcopy">All games and limits are loaded from the project source-of-truth config.</p>
+        <p className="catalog-subcopy">Each game card comes from the canonical config used by the generator.</p>
 
         <div className="chips">
           {config?.games.map((game) => (
@@ -320,10 +340,10 @@ function App() {
                 />
               ))}
             </div>
-            <p className="rail-kicker">Selected game</p>
+            <p className="rail-kicker">Rule sheet</p>
             <h2>{selectedGame?.displayName ?? 'Choose a game'}</h2>
             <p className="rail-copy">
-              {ruleSummary || 'Pick a game to show its rule summary and generation format.'}
+              {ruleSummary || 'Pick a game to reveal its rule sheet and output format.'}
             </p>
             {selectedGame && (
               <dl className="fact-list">
@@ -338,11 +358,12 @@ function App() {
           </section>
 
           <section className="rail-card">
-            <p className="rail-kicker">Game behavior</p>
+            <p className="rail-kicker">How it works</p>
             <ul className="rail-list">
-              <li>6/x lotto games use draw-like unsorted output.</li>
-              <li>Digit games keep their numeric structure and padding rules.</li>
-              <li>All validation comes from the same config source.</li>
+              <li>6/x lotto games are randomized, then shown in ascending order.</li>
+              <li>6D keeps the exact order of the generated digits.</li>
+              <li>Other digit games keep their generated order and padding rules.</li>
+              <li>All rules come from the canonical config file.</li>
             </ul>
           </section>
         </motion.aside>
@@ -357,8 +378,8 @@ function App() {
             transition={{ duration: 0.6 }}
           >
             <div className="generator-head">
-              <h2>Rule-Driven Generator</h2>
-              <p>{ruleSummary || 'Loading game rules...'}</p>
+              <h2>Random Slip Generator</h2>
+              <p>{ruleSummary || 'Choose a game to load its rule sheet.'}</p>
             </div>
 
             <div className="controls">
@@ -388,8 +409,8 @@ function App() {
 
             <div className="batch-panel">
               <div>
-                <h3>Quick batch</h3>
-                <p>Generate up to {MAX_BATCH_SIZE} entries at once and save them to history.</p>
+                <h3>Batch mode</h3>
+                <p>Generate up to {MAX_BATCH_SIZE} slips at once and save them locally.</p>
               </div>
               <div className="batch-actions">
                 <div className="batch-field">
@@ -471,15 +492,15 @@ function App() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                Tap generate to create your first entry.
+                Generate your first slip to see the output here.
               </motion.div>
             )}
 
             <div className="history-panel">
               <div className="history-head">
                 <div>
-                  <h3>Recent entries</h3>
-                  <p className="history-subcopy">Saved locally in this browser.</p>
+                  <h3>Slip history</h3>
+                  <p className="history-subcopy">Saved in this browser only.</p>
                 </div>
                 <button
                   type="button"
@@ -492,7 +513,7 @@ function App() {
               </div>
 
               {history.length === 0 ? (
-                <p className="history-empty">No history yet. Generate your first batch.</p>
+                <p className="history-empty">No saved slips yet. Generate a batch to fill this list.</p>
               ) : (
                 <ul className="history-list">
                   {history.map((item, index) => (
@@ -544,7 +565,7 @@ function App() {
             <div className="stat-stack">
               <div className="stat-item">
                 <span className="stat-value">{sessionStats.generatedCount}</span>
-                <span className="stat-label">Entries generated</span>
+                <span className="stat-label">Slips generated</span>
               </div>
               <div className="stat-item">
                 <span className="stat-value">{sessionStats.gameCount}</span>
@@ -558,7 +579,7 @@ function App() {
           </section>
 
           <section className="rail-card">
-            <p className="rail-kicker">Latest pick</p>
+            <p className="rail-kicker">Latest slip</p>
             {sessionStats.latestHistory ? (
               <>
                 <h3>{getGameLabel(sessionStats.latestHistory.gameId)}</h3>
@@ -568,12 +589,12 @@ function App() {
                 </p>
               </>
             ) : (
-              <p className="rail-copy">No generated entries yet. Use the center panel to start a batch.</p>
+              <p className="rail-copy">No slip has been generated yet. Use the center panel to start.</p>
             )}
           </section>
 
           <section className="rail-card">
-            <p className="rail-kicker">Quick actions</p>
+            <p className="rail-kicker">Fast actions</p>
             <div className="quick-actions">
               <button type="button" className="action action-primary" onClick={() => handleGenerate(5)} disabled={!selectedGame}>
                 Generate 5
@@ -603,16 +624,16 @@ function App() {
       >
         {[
           {
-            title: 'PCSO Matrix Aware',
-            text: 'Every game constraint is loaded from the config and validated before display.',
+            title: 'Catalog first',
+            text: 'Every game, range, and pick count comes from the same canonical config file.',
           },
           {
-            title: 'Neobrutal UI Language',
-            text: 'Hard borders, loud accents, and tactile card motion shape the whole interface.',
+            title: 'Ascending lotto output',
+            text: 'Lotto slips are randomized, then presented in a clean ascending display.',
           },
           {
-            title: 'Motion with Discipline',
-            text: 'Animations are expressive but respect reduced-motion and readability.',
+            title: 'Local session memory',
+            text: 'Recent slips stay in this browser so the generator feels continuous.',
           },
         ].map((item, index) => (
           <motion.article
@@ -631,7 +652,7 @@ function App() {
 
       <footer className="page-footer">
         <span>Juan-to-Six v{__APP_VERSION__}</span>
-        <span>Updated for quick-pick batches &amp; history</span>
+        <span>Random slips, local history, rule-locked output</span>
       </footer>
     </div>
   )
