@@ -33,6 +33,18 @@ const getOrderLabel = (game: PcsoGame): string => {
   return 'Generated order'
 }
 
+const escapeCsvValue = (value: string): string => {
+  if (/[",\n]/.test(value)) {
+    return `"${value.replace(/"/g, '""')}"`
+  }
+
+  return value
+}
+
+const formatTimestampForFile = (value: string): string => {
+  return value.replace(/[:.]/g, '-').replace('T', '_').replace('Z', '')
+}
+
 const isStoredEntry = (value: unknown): value is GeneratedEntry => {
   if (!value || typeof value !== 'object') {
     return false
@@ -139,6 +151,42 @@ function App() {
 
   const formatEntryText = (target: GeneratedEntry): string => {
     return `${getGameLabel(target.gameId)}: ${target.formatted.join(' ')}`
+  }
+
+  const exportHistoryToCsv = () => {
+    if (history.length === 0) {
+      showCopyStatus('No history to export yet.')
+      return
+    }
+
+    const rows = [
+      ['Created At', 'Game', 'Numbers', 'Raw Numbers'],
+      ...history.map((item) => [
+        new Date(item.createdAt).toLocaleString(),
+        getGameLabel(item.gameId),
+        item.formatted.join(' '),
+        item.raw.join(' '),
+      ]),
+    ]
+
+    const csv = rows
+      .map((row) => row.map((cell) => escapeCsvValue(cell)).join(','))
+      .join('\n')
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement('a')
+    const fileStamp = formatTimestampForFile(new Date().toISOString())
+
+    anchor.href = url
+    anchor.download = `juan-to-six-history-${fileStamp}.csv`
+    anchor.click()
+    URL.revokeObjectURL(url)
+    showCopyStatus('CSV history exported.')
+  }
+
+  const handlePrintBatch = () => {
+    window.print()
   }
 
   const showCopyStatus = (message: string) => {
@@ -440,6 +488,30 @@ function App() {
               </div>
             </div>
 
+            <div className="batch-summary">
+              {latestBatch.length > 0 ? (
+                <>
+                  <div>
+                    <p className="batch-summary-kicker">Latest batch</p>
+                    <p className="batch-summary-text">Use the print action to open a clean layout for this batch.</p>
+                  </div>
+                  <button type="button" className="action action-ghost" onClick={handlePrintBatch}>
+                    Print batch
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <p className="batch-summary-kicker">Before you generate</p>
+                    <p className="batch-summary-text">Pick a game, choose a batch size, and generate a fresh slip set.</p>
+                  </div>
+                  <button type="button" className="action action-ghost" onClick={jumpToGenerator}>
+                    Jump to generator
+                  </button>
+                </>
+              )}
+            </div>
+
             {latestBatch.length > 0 ? (
               <div className="ticket-grid" role="list" aria-label="Generated entries">
                 {latestBatch.map((item, index) => (
@@ -492,7 +564,8 @@ function App() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                Generate your first slip to see the output here.
+                <p className="ticket-empty-title">No batch generated yet.</p>
+                <p className="ticket-empty-copy">Select a game and generate a batch to preview the slips here.</p>
               </motion.div>
             )}
 
@@ -502,18 +575,33 @@ function App() {
                   <h3>Slip history</h3>
                   <p className="history-subcopy">Saved in this browser only.</p>
                 </div>
-                <button
-                  type="button"
-                  className="action action-ghost"
-                  onClick={clearHistory}
-                  disabled={history.length === 0}
-                >
-                  Clear history
-                </button>
+                <div className="history-actions-row">
+                  <button
+                    type="button"
+                    className="action action-ghost"
+                    onClick={exportHistoryToCsv}
+                    disabled={history.length === 0}
+                  >
+                    Export CSV
+                  </button>
+                  <button
+                    type="button"
+                    className="action action-ghost"
+                    onClick={clearHistory}
+                    disabled={history.length === 0}
+                  >
+                    Clear history
+                  </button>
+                </div>
               </div>
 
               {history.length === 0 ? (
-                <p className="history-empty">No saved slips yet. Generate a batch to fill this list.</p>
+                <div className="history-empty-card">
+                  <p className="history-empty-title">History is empty for now.</p>
+                  <p className="history-empty-copy">
+                    Generated slips will stay here on this device, ready to export or copy later.
+                  </p>
+                </div>
               ) : (
                 <ul className="history-list">
                   {history.map((item, index) => (
@@ -654,6 +742,11 @@ function App() {
         <span>Juan-to-Six v{__APP_VERSION__}</span>
         <span>Random slips, local history, rule-locked output</span>
       </footer>
+
+      <div className="print-header" aria-hidden="true">
+        <h1>Juan-to-Six</h1>
+        <p>Printable slip batch export</p>
+      </div>
     </div>
   )
 }
