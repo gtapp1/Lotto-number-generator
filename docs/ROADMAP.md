@@ -4,13 +4,13 @@ This document tracks future phases and planned updates for the Juan-to-Six PCSO 
 
 ## Release Phases
 
-### Phase 1.1 (Quick Wins) - In Progress
+### Phase 1.1 (Quick Wins) - Complete
 - Batch generation (1/5/10) with grid display.
 - Local history (last 20 entries) with clear action.
 - Copy/share actions for each entry.
 - Version display in the footer.
 
-### Phase 1.2 (Quality + UX)
+### Phase 1.2 (Quality + UX) - Complete
 - Export history to CSV.
 - Print-friendly view for generated batches.
 - Optional compact layout for mobile batch grids.
