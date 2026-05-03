@@ -16,7 +16,7 @@ This document tracks future phases and planned updates for the Juan-to-Six PCSO 
 - Optional compact layout for mobile batch grids.
 - Empty-state improvements (history + generator).
 
-### Phase 1.3 (Rules + Validation)
+### Phase 1.3 (Rules + Validation) - Complete
 - Manual verification of digit-game rules from PCSO sources.
 - Add game-specific rule notes to config (if needed).
 - Config validation messaging improvements for users.

@@ -19,7 +19,11 @@
       "unique": true,
       "orderMode": "ascending",
       "padWidth": 2,
-      "verificationStatus": "confirmed-from-pcso-name-matrix"
+      "verificationStatus": "confirmed-from-pcso-name-matrix",
+      "ruleNotes": [
+        "Randomly select 6 unique numbers from 1 to 58.",
+        "Display the finished slip in ascending order for readability."
+      ]
     },
     {
       "id": "grand-lotto-6-55",
@@ -31,7 +35,11 @@
       "unique": true,
       "orderMode": "ascending",
       "padWidth": 2,
-      "verificationStatus": "confirmed-from-pcso-name-matrix"
+      "verificationStatus": "confirmed-from-pcso-name-matrix",
+      "ruleNotes": [
+        "Randomly select 6 unique numbers from 1 to 55.",
+        "Display the finished slip in ascending order for readability."
+      ]
     },
     {
       "id": "super-lotto-6-49",
@@ -43,7 +51,11 @@
       "unique": true,
       "orderMode": "ascending",
       "padWidth": 2,
-      "verificationStatus": "confirmed-from-pcso-name-matrix"
+      "verificationStatus": "confirmed-from-pcso-name-matrix",
+      "ruleNotes": [
+        "Randomly select 6 unique numbers from 1 to 49.",
+        "Display the finished slip in ascending order for readability."
+      ]
     },
     {
       "id": "mega-lotto-6-45",
@@ -55,7 +67,11 @@
       "unique": true,
       "orderMode": "ascending",
       "padWidth": 2,
-      "verificationStatus": "confirmed-from-pcso-name-matrix"
+      "verificationStatus": "confirmed-from-pcso-name-matrix",
+      "ruleNotes": [
+        "Randomly select 6 unique numbers from 1 to 45.",
+        "Display the finished slip in ascending order for readability."
+      ]
     },
     {
       "id": "lotto-6-42",
@@ -67,7 +83,11 @@
       "unique": true,
       "orderMode": "ascending",
       "padWidth": 2,
-      "verificationStatus": "confirmed-from-pcso-name-matrix"
+      "verificationStatus": "confirmed-from-pcso-name-matrix",
+      "ruleNotes": [
+        "Randomly select 6 unique numbers from 1 to 42.",
+        "Display the finished slip in ascending order for readability."
+      ]
     },
     {
       "id": "6d-lotto",
@@ -79,7 +99,11 @@
       "unique": false,
       "orderMode": "exact",
       "padWidth": 1,
-      "verificationStatus": "digit-rule-needs-manual-pcso-page-check"
+      "verificationStatus": "verified-from-pcso-draw-results",
+      "ruleNotes": [
+        "Match all 6 digits in exact sequence.",
+        "Digits are shown exactly as drawn, without sorting."
+      ]
     },
     {
       "id": "4d-lotto",
@@ -91,7 +115,11 @@
       "unique": false,
       "orderMode": "generated",
       "padWidth": 1,
-      "verificationStatus": "digit-rule-needs-manual-pcso-page-check"
+      "verificationStatus": "verified-from-pcso-draw-results",
+      "ruleNotes": [
+        "Keep the 4 digits in sequence.",
+        "Digits are shown exactly as drawn, without sorting."
+      ]
     },
     {
       "id": "3d-lotto",
@@ -103,7 +131,11 @@
       "unique": false,
       "orderMode": "generated",
       "padWidth": 1,
-      "verificationStatus": "digit-rule-needs-manual-pcso-page-check"
+      "verificationStatus": "verified-from-pcso-draw-results",
+      "ruleNotes": [
+        "Keep the 3 digits in sequence.",
+        "Digits are shown exactly as drawn, without sorting."
+      ]
     },
     {
       "id": "2d-lotto",
@@ -115,7 +147,11 @@
       "unique": false,
       "orderMode": "generated",
       "padWidth": 2,
-      "verificationStatus": "digit-rule-needs-manual-pcso-page-check"
+      "verificationStatus": "verified-from-pcso-draw-results",
+      "ruleNotes": [
+        "Keep the 2 numbers in sequence.",
+        "Display values with two-digit padding for consistency."
+      ]
     }
   ]
 }

@@ -17,6 +17,8 @@ Output: one canonical, reviewable game catalog.
 
 Output: every shown ticket is valid for the selected game.
 
+Game-specific notes and verification labels should be read from the config and shown in the UI, not hardcoded in the component tree.
+
 ## 3) Validation Workflow
 
 For each generated entry, run these checks:
