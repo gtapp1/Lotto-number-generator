@@ -99,6 +99,65 @@
   text-align: right;
 }
 
+.rule-notes {
+  margin-top: 0.9rem;
+  border-top: 2px solid rgba(19, 33, 46, 0.16);
+  padding-top: 0.75rem;
+}
+
+.rule-notes-kicker {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.rule-notes-list {
+  margin: 0.5rem 0 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.45rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.generator-status {
+  margin-top: 1rem;
+  border: 3px solid var(--ink-900);
+  box-shadow: 6px 6px 0 var(--ink-900);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 248, 215, 0.95));
+  padding: 0.8rem 0.9rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.generator-status p {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border: 2px solid var(--ink-900);
+  padding: 0.22rem 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.status-pill-verified {
+  background: #c4f3ff;
+}
+
+.status-pill-warning {
+  background: #ffd7a8;
+}
+
 .rail-list {
   margin: 0.75rem 0 0;
   padding-left: 1.1rem;
@@ -816,6 +875,10 @@ input[type='number'] {
   .ticket-actions .action,
   .quick-actions .action {
     width: 100%;
+  }
+
+  .generator-status {
+    box-shadow: 4px 4px 0 var(--ink-900);
   }
 }
 

@@ -13,6 +13,7 @@ const superLotto: PcsoGame = {
   orderMode: 'ascending',
   padWidth: 2,
   verificationStatus: 'confirmed',
+  ruleNotes: ['Randomly select 6 unique numbers from 1 to 49.', 'Display the finished slip in ascending order for readability.'],
 }
 
 const sixDLotto: PcsoGame = {
@@ -26,6 +27,7 @@ const sixDLotto: PcsoGame = {
   orderMode: 'exact',
   padWidth: 1,
   verificationStatus: 'confirmed',
+  ruleNotes: ['Match all 6 digits in exact sequence.', 'Digits are shown exactly as drawn, without sorting.'],
 }
 
 const twoDLotto: PcsoGame = {
@@ -39,6 +41,7 @@ const twoDLotto: PcsoGame = {
   orderMode: 'generated',
   padWidth: 2,
   verificationStatus: 'confirmed',
+  ruleNotes: ['Keep the 2 numbers in sequence.', 'Display values with two-digit padding for consistency.'],
 }
 
 afterEach(() => {

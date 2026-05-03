@@ -11,6 +11,7 @@ export const gameSchema = z.object({
   orderMode: z.enum(['ascending', 'generated', 'exact']),
   padWidth: z.number().int().positive(),
   verificationStatus: z.string(),
+  ruleNotes: z.array(z.string()).min(1),
 })
 
 export const pcsoConfigSchema = z.object({

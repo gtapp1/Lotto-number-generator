@@ -45,6 +45,22 @@ const formatTimestampForFile = (value: string): string => {
   return value.replace(/[:.]/g, '-').replace('T', '_').replace('Z', '')
 }
 
+const formatVerificationStatus = (status: string): string => {
+  if (status === 'verified-from-pcso-draw-results') {
+    return 'Verified from PCSO draw results'
+  }
+
+  if (status === 'confirmed-from-pcso-name-matrix') {
+    return 'Verified from PCSO game matrix'
+  }
+
+  if (status === 'digit-rule-needs-manual-pcso-page-check') {
+    return 'Manual PCSO review needed'
+  }
+
+  return status
+}
+
 const isStoredEntry = (value: unknown): value is GeneratedEntry => {
   if (!value || typeof value !== 'object') {
     return false
@@ -292,6 +308,7 @@ function App() {
         { label: 'Range', value: `${selectedGame.min} to ${selectedGame.max}` },
         { label: 'Unique', value: selectedGame.unique ? 'Yes' : 'No' },
         { label: 'Display order', value: getOrderLabel(selectedGame) },
+        { label: 'Verification', value: formatVerificationStatus(selectedGame.verificationStatus) },
       ]
     : []
 
@@ -403,6 +420,17 @@ function App() {
                 ))}
               </dl>
             )}
+
+            {selectedGame && (
+              <div className="rule-notes">
+                <p className="rule-notes-kicker">Rule notes</p>
+                <ul className="rule-notes-list">
+                  {selectedGame.ruleNotes.map((note) => (
+                    <li key={note}>{note}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </section>
 
           <section className="rail-card">
@@ -410,7 +438,7 @@ function App() {
             <ul className="rail-list">
               <li>6/x lotto games are randomized, then shown in ascending order.</li>
               <li>6D keeps the exact order of the generated digits.</li>
-              <li>Other digit games keep their generated order and padding rules.</li>
+              <li>4D, 3D, and 2D keep their generated digit sequence and padding rules.</li>
               <li>All rules come from the canonical config file.</li>
             </ul>
           </section>
@@ -429,6 +457,19 @@ function App() {
               <h2>Random Slip Generator</h2>
               <p>{ruleSummary || 'Choose a game to load its rule sheet.'}</p>
             </div>
+
+            {selectedGame && (
+              <div className="generator-status">
+                <span className={`status-pill status-pill-${selectedGame.verificationStatus.includes('manual') ? 'warning' : 'verified'}`}>
+                  {formatVerificationStatus(selectedGame.verificationStatus)}
+                </span>
+                <p>
+                  {selectedGame.verificationStatus === 'verified-from-pcso-draw-results'
+                    ? 'Digit rules were checked against PCSO draw-result listings and kept as sequence-based outputs.'
+                    : 'This game uses the canonical matrix config and the generator validates the output before display.'}
+                </p>
+              </div>
+            )}
 
             <div className="controls">
               <label htmlFor="game-select">Select game</label>
